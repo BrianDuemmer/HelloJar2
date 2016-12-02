@@ -3,7 +3,7 @@
 
 <Configuration status="warn" name="MyApp" packages="">
 	<Properties>
-		<Property name="logDir">/home/pi/223/log</Property>
+		<Property name="logDir">C:/mylogs</Property>
 		<Property name="logName">activeLog.log</Property>
 	</Properties>
 	 

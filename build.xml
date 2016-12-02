@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="clean" name="Create Runnable Jar for Project helloJar2">
-	
 
-    <property name="dir.buildfile" value="."/>
-    <property name="dir.workspace" value="${dir.buildfile}/.."/>
-    <property name="dir.jarfile" value="${dir.buildfile}"/>
+	
+	<property name="jarName" value="helloJar.jar"/>
+    <property name="dir.workspace" value="${basedir}"/>
+    <property name="dir.jarfile" value="${dir.workspace}/${jarName}"/>
 	
 	<property name="target.ip" value="pi-223-0.local"/>
 	<property name="target.sshPort" value="5809"/>
@@ -12,8 +12,8 @@
 	<property name="target.pass" value="223pi"/>
 
 	<property name="target.path" value="/home/pi/223/bin"/>
-	<property name="target.jarName" value="helloJar.jar"/>
 	<property name="target.debugPort" value="5810"/>
+	
 	
 	
 	<path id="build.classpath">
@@ -26,22 +26,21 @@
 	
 	<!-- Create the jar file -->	
     <target name="create_jar" depends="compile">
-        <jar destfile="${dir.jarfile}/${target.jarName}" filesetmanifest="skip">
-        	<classpath>
-        		<pathelement location="${basedir}/bin"/>
-        		<path refid="build.classpath" />
-    		</classpath>
+        <jar destfile="${jarName}" filesetmanifest="skip">
             <manifest>
                 <attribute name="Main-Class" value="pack.MainClass"/>
-                <attribute name="Class-Path" value="build.classpath"/>
+                <attribute name="Class-Path" value="."/>
             </manifest>
+            <fileset dir="${dir.workspace}/bin"/>
+            <fileset dir="${dir.workspace}/lib"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.workspace}/lib/log4j-api-2.7.jar"/>
         </jar>
     </target>
 	
 	
 	<!-- Cleans up the old class files and jar files -->
 	<target name="clean">
-		<delete file="${dir.jarfile}/${target.jarName}"/>
+		<delete file="${jarName}"/>
 		<delete dir="bin"/>
 	</target>
 	
@@ -56,16 +55,15 @@
 	
 	<!-- Runs the jar locally-->
 	<target name="run_jar" depends="create_jar">
-		<java jar="${dir.jarfile}/${target.jarName}" fork="true"/>
+		<java jar="${jarName}" fork="true"/>
 	</target>
 	
-	
-	
+		
 	<!-- Deploy the jar to the target, and configure it to run normally. Invokes "runJar.sh" to manage the java initialization.
 		 runJar.sh should be in the same directory as the ${target.path} -->
 	<target name="deploy_jar" depends="create_jar">
 		
-		<scp file="${dir.jarfile}/${target.jarName}"
+		<scp file="${dir.jarfile}"
 			todir="${target.user}@${target.ip}: ${target.path}/${target.jarName}"
 			password="${target.pass}"
 			trust="true" 
@@ -84,9 +82,9 @@
 	
 	<!-- Deploy the jar to the target, and configure it to accept a debugger connection. Invokes "runJar.sh" to manage the java initialization.
 		 runJar.sh should be in the same directory as the ${target.path} -->
-	<target name="debug_deploy">
-		<scp file="${dir.jarfile}/${target.jarName}"
-			todir="${target.user}@${target.ip}: ${target.path}/${target.jarName}"
+	<target name="debug_dep">
+		<scp file="${dir.jarfile}"
+			todir="${target.user}@${target.ip}: ${target.path}/${jarName}"
 			password="${target.pass}"
 			port="${target.sshPort}"
 			trust="true" />
