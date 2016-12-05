@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="clean" name="Create Runnable Jar for Project helloJar2">
+<project default="create_jar" name="Create Runnable Jar for Project helloJar2">
 
 	
 	<property name="jarName" value="helloJar.jar"/>
-    <property name="dir.workspace" value="${basedir}"/>
+    <property name="dir.workspace" value="."/>
     <property name="dir.jarfile" value="${dir.workspace}/${jarName}"/>
 	
 	<property name="target.ip" value="pi-223-0.local"/>
@@ -25,16 +25,26 @@
 	
 	
 	<!-- Create the jar file -->	
-    <target name="create_jar" depends="compile">
-        <jar destfile="${jarName}" filesetmanifest="skip">
+
+    <target name="create_jar" depends = "compile">
+    	
+    	<zip destfile="${dir.workspace}/tmp.jar">
+    		<zipgroupfileset dir="lib" includes="**/*.jar"/>
+    	</zip>
+    	
+    	
+        <jar destfile="${dir.jarfile}" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="pack.MainClass"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="${dir.workspace}/bin"/>
             <fileset dir="${dir.workspace}/lib"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dir.workspace}/lib/log4j-api-2.7.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.workspace}/tmp.jar"/>
         </jar>
+    	
+    	
+    	<delete file="${dir.workspace}/tmp.jar"/>
     </target>
 	
 	
@@ -61,10 +71,10 @@
 		
 	<!-- Deploy the jar to the target, and configure it to run normally. Invokes "runJar.sh" to manage the java initialization.
 		 runJar.sh should be in the same directory as the ${target.path} -->
-	<target name="deploy_jar" depends="create_jar">
+	<target name="deploy_jar" depends="create_jar, killRemote">
 		
 		<scp file="${dir.jarfile}"
-			todir="${target.user}@${target.ip}: ${target.path}/${target.jarName}"
+			todir="${target.user}@${target.ip}: ${target.path}/${jarName}"
 			password="${target.pass}"
 			trust="true" 
 			port="${target.sshPort}"/>
@@ -75,14 +85,14 @@
 			port="${target.sshPort}"
 			trust="true"
 			failonerror="true"
-			command="sh ${target.path}/runJar.sh -o ${target.path}/log.txt -a ${target.path}/${target.jarName}" />
+			command="sh ${target.path}/runJar.sh -o ${target.path}/log.txt -a ${target.path}/${jarName}" />
 	</target>
 	
 	
 	
 	<!-- Deploy the jar to the target, and configure it to accept a debugger connection. Invokes "runJar.sh" to manage the java initialization.
 		 runJar.sh should be in the same directory as the ${target.path} -->
-	<target name="debug_dep">
+	<target name="debug_dep" depends="create_jar, killRemote">
 		<scp file="${dir.jarfile}"
 			todir="${target.user}@${target.ip}: ${target.path}/${jarName}"
 			password="${target.pass}"
@@ -95,8 +105,33 @@
 			trust="true"
 			port="${target.sshPort}"
 			failonerror="true"
-			command="sh ${target.path}/runJar.sh -o ${target.path}/log.txt -a -d ${target.debugPort} ${target.path}/${target.jarName}" />
+			command="sh ${target.path}/runJar.sh -o ${target.path}/log.txt -a -d ${target.debugPort} ${target.path}/${jarName}" />
 		
 		<echo message="Now hit the debug button to connect and start the debugging session"/>
 	</target>
+	
+	
+	<!-- Kill all instances of the remote process -->
+	<target name="killRemote">
+		<sshexec host="${target.ip}"
+					username="${target.user}"
+					password="${target.pass}"
+					trust="true"
+					port="${target.sshPort}"
+					failonerror="false"
+					command="pkill -9 -f ${jarName}" />
+	</target>
+	
+
 </project>
+
+
+
+
+
+
+
+
+
+
+

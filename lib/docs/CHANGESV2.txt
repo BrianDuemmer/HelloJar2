@@ -1,0 +1,79 @@
+CHANGES
+=======
+
+V 2.2.5
+- Improved the linux script used for starting the BluetoothServer.
+- The About dialog now prints System info with OS name, architecture, version and Java version.
+- If you try to start the Server in Mac OS X you will get a warning window at startup, 
+  saying that we do not support this operating system. You will be able to start.
+- Added the startup script for Mac OS X.
+
+V 2.2.4
+- Improved the BluetoothAppender to not throw a NPE when executing on emulator.
+
+V 2.2.3
+- Improved the Bluetooth server shell script for Linux.
+
+v 2.2.2
+- Fixed Bug ID: 2907066.
+
+v 2.2.1
+- Fixed build problems in Maven.
+
+v 2.2.0
+
+- Added tests for the BluetoothAppender and its helper classes.
+- Removed problem with setting the lineseparator in the FileAppender class.
+- Supports the microlog.appender.BluetoothSerialAppender.btAddress property for setting the server Bluetooth address. This has the added benefit of simpler client code. Also, backwards compatibility is great since all that needs to be changed is adding the property value and it will use the new service search method instead of the unreliable selectService method previously used.
+- Added a window that will show the server Bluetooth address in the Bluetooth UI.
+- A new class containing all the Bluetooth communication code is added (BluetoothConnectionHandler) that will help keep the appender much cleaner.
+
+v 2.1.0
+- Added the possibility to add custom aliases for appenders and formatters.
+
+V 2.0.5
+
+* Optimized the Maven dependencies.
+
+V 2.0.4
+
+* Removed a NullPointerException in the PropertyConfigurator.
+
+V 2.0.3
+
+* Added signing of artifacts.
+* Changed the deployment of artifacts to the Sonatype
+  OSS Repository Hosting.
+
+V 2.0.2
+
+* Changed the code to avoid pre verification problems
+
+V 2.0.1
+
+* Enabled the javadoc site generation.
+* The version for the microlog HTTP server WAR is now correct.
+
+V 2.0.0
+
+* Added an example servlet that implements an HTTP log server.
+  To be used by the HttpAppender class.
+* Added support for using alias for classes in microlog properties 
+  files.
+* Changed the groupId in the Maven files to net.sf.microlog.
+* Added a list of connected clients to the GUI.
+* Added the possibility of connecting several Bluetooth clients to the
+  Bluetooth server.
+* Added a GUI for the Bluetooth Server.
+* Added auto configuration which is used when the user has not configured 
+  Microlog. This is a fallback solution to make it easier for new users.
+* Created a LoggerFactory class and removed the factory methods from the 
+  Logger class. The circular dependency between Logger and the 
+  LoggerRepository is now removed.
+* Removed the DateFormatter class (which is obsolete).
+* Removed the ConfigurableFormatter.
+* Re-factored the FileAppender, which is now FileConnectionAppender, and 
+  created the AbstractFileAppender.
+* Created the core, common, midp, spot packages, e.g. net.sf.microlog.core 
+* Added support for setting a client id on each logger.
+   

@@ -2,13 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Program Files/microlog/microlog-logger-core-2.3.5.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/microlog/microlog-logger-midp-2.3.5.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/microlog/microlog-logger-midp-bluetooth-2.3.5.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/microlog/microlog-logger-midp-file-2.3.5.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/microlog/microlog-logger-midp-wma-2.3.5.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/microlog/microlog-server-bluetooth-2.3.5.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/microlog/microlog-server-socket-2.3.5.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/microlog/javax.microedition.jar"/>
+	<classpathentry kind="lib" path="lib/javax.microedition.jar"/>
+	<classpathentry kind="lib" path="lib/com.sun.midp.jar"/>
+	<classpathentry kind="lib" path="C:/dev/17/helloJar2/lib/microlog-logger-core-2.3.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

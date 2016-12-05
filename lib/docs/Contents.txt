@@ -1,0 +1,17 @@
+This file contains a short desription of the content in this zip file.
+
+
+
+The jar files:
+microlog-logger-core-2.x.y.jar - The core Microlog classes, including the configuration classes.
+microlog-logger-midp-2.x.y.jar - The MIDP classes, including the MIDP specific Appenders.
+microlog-logger-midp-bluetooth-2.x.y.jar - The BluetoothAppender. Requires an implementation of JSR-82.
+microlog-logger-midp-file-2.x.y.jar - The FileAppender.
+microlog-logger-midp-wma-2.x.y.jar - The MMS and SMS appender classes.
+
+microlog-server-bluetooth-2.x.y.jar - Contains the Bluetooth server. (Requires Java 5 or newer)
+microlog-server-socket-2.x.y.jar - Contains the socket server.
+
+The war file:
+
+microlog-server-http-2.x.y.war - A servlet that accept loggings from the HTTP appender.
